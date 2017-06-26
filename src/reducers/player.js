@@ -23,37 +23,61 @@ const initialState = {
 	selectedPlayerIndex: -1
 }
 
+const date = new Date();
+const day = date.getDate();
+const month = date.getMonth() + 1;
+const year = date.getFullYear();
+
+
 export default function Player(state=initialState, action) {
   switch(action.type) {
     case PlayerActionTypes.ADD_PLAYER:
-    console.log(state);
-      return [
-        ...state.players,
-        {
-          name: action.name,
-          score: 0
-        }
-      ];
+    
+    const AddPlayerList = [...state.players, {
+      name: action.name,
+      score: 0,
+      created: `${month}/${day}/${year}`
+    }];
+
+      return {
+        ...state,
+        players: AddPlayerList
+      };
       
     case PlayerActionTypes.REMOVE_PLAYER:
-      return [
-        ...state.slice(0, action.index),
-        ...state.slice(action.index + 1)
+      const RemovePlayerList = [
+        ...state.players.slice(0, action.index),
+        ...state.players.slice(action.index + 1)
       ];
+
+      return {
+        ...state,
+        players: RemovePlayerList
+      };
       
     case PlayerActionTypes.UPDATE_PLAYER_SCORE:
-      return state.map((player, index) => {
+      const updatePlayersList = state.players.map((player, index) => {
         if(index === action.index) {
           return {
             ...player,
-            score: player.score + action.score
+            score: player.score + action.score,
+            updated: `${month}/${day}/${year}`
           };
         }
         return player;
       });
 
+      return {
+        ...state,
+        players: updatePlayersList
+      }
+  
+    
     case PlayerActionTypes.SELECT_PLAYER:
-      return ;
+      return {
+        ...state,
+        selectedPlayerIndex: action.index
+      }
       
     default:
       return state;

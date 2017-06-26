@@ -22,4 +22,11 @@ export const updatePlayerScore = (index, score)  => {
   };
 };
 
+export const selectPlayer = (index)  => {
+   return {
+     type: PlayerActionTypes.SELECT_PLAYER,
+     index
+  };
+};
+
 
